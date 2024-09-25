@@ -15,7 +15,8 @@ defmodule Generator.Application do
       # Start a worker by calling: Generator.Worker.start_link(arg)
       # {Generator.Worker, arg},
       # Start to serve requests, typically the last entry
-      GeneratorWeb.Endpoint
+      GeneratorWeb.Endpoint,
+      {Oban, Application.fetch_env!(:generator, Oban)}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

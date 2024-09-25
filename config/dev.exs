@@ -1,6 +1,15 @@
 import Config
 
 # Configure your database
+# config :generator, Generator.Repo,
+#   username: "remotepostgres",
+#   password: "remotepostgres",
+#   hostname: "192.168.1.54",
+#   database: "generator_dev",
+#   stacktrace: true,
+#   show_sensitive_data_on_connection_error: true,
+#   pool_size: 10
+
 config :generator, Generator.Repo,
   username: "postgres",
   password: "postgres",
@@ -9,6 +18,19 @@ config :generator, Generator.Repo,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
+
+# config/config.exs
+config :generator, Oban,
+  engine: Oban.Engines.Basic,
+  queues: [default: 10],
+  repo: Generator.Repo
+
+config :generator, Oban,
+  queues: [default: System.schedulers_online()],
+  repo: Generator.Repo,
+  plugins: [
+    {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(60)}
+  ]
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
